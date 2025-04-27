@@ -1,0 +1,31 @@
+services:
+  spiga_backend_dev:
+    image: spiga-backend-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8081:8081"
+    depends_on:
+      - spiga_postgres_dev
+    profiles:
+      - development
+
+  spiga_postgres_dev:
+    container_name: spiga-postgres-dev
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${DEV_DB_NAME}
+      POSTGRES_USER: ${DEV_DB_USERNAME}
+      POSTGRES_PASSWORD: ${DEV_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_development_data:/var/lib/postgresql/data
+    profiles:
+      - development
+    env_file:
+      - .env
+
+volumes:
+  postgres_development_data: {}
