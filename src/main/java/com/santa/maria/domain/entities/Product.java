@@ -1,11 +1,13 @@
 package com.santa.maria.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -25,4 +27,11 @@ public class Product {
 
   @Column(name = "production_unit")
   private String productionUnit;
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+  private List<ProductRawMaterial> rawMaterials;
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+  @JsonIgnore()
+  private List<Production> productions;
 }

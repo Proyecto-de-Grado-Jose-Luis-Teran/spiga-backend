@@ -3,7 +3,6 @@ package com.santa.maria.application.services.concretes;
 import com.santa.maria.application.mappers.IProductMapper;
 import com.santa.maria.application.requests.ProductCreateRequest;
 import com.santa.maria.application.requests.ProductUpdateRequest;
-import com.santa.maria.application.responses.ProductResponse;
 import com.santa.maria.application.services.contracts.IProductService;
 import com.santa.maria.domain.entities.Product;
 import com.santa.maria.domain.repositories.IProductRepository;
@@ -29,23 +28,22 @@ public class ProductService implements IProductService {
   }
 
   @Override
-  public List<Product> findAllProducts() {
+  public List<Product> getAllProducts() {
     return productRepository.findAll();
   }
 
   @Override
-  public ProductResponse createProduct(ProductCreateRequest productCreateRequest) {
+  public Product createProduct(ProductCreateRequest productCreateRequest) {
     Product product = new Product();
     product.setName(productCreateRequest.name());
     product.setProductionUnit(productCreateRequest.productionUnit());
 
-    productRepository.save(product);
-
-    return productMapper.mapToProductResponse(product);
+    Product savedProduct = productRepository.save(product);
+    return savedProduct;
   }
 
   @Override
-  public ProductResponse updateProductById(UUID productId, ProductUpdateRequest productUpdateRequest) {
+  public Product updateProductById(UUID productId, ProductUpdateRequest productUpdateRequest) {
     Product existingProduct = productRepository.findById(productId)
             .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
 
@@ -53,8 +51,7 @@ public class ProductService implements IProductService {
     existingProduct.setProductionUnit(productUpdateRequest.productionUnit());
 
     Product updatedProduct = productRepository.save(existingProduct);
-
-    return productMapper.mapToProductResponse(updatedProduct);
+    return updatedProduct;
   }
 
   @Override

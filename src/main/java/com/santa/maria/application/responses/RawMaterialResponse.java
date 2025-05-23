@@ -3,10 +3,10 @@ package com.santa.maria.application.responses;
 import java.util.List;
 import java.util.UUID;
 
-public record ProductResponse(
-        UUID productId,
+public record RawMaterialResponse(
+        UUID rawMaterialId,
         String name,
-        String productionUnit,
+        float weightPerBagKg,
         List<ProductRawMaterialResponse> productRawMaterialResponses,
-        List<ProductionResponse> productionResponses
+        List<ConsumptionResponse> consumptionResponses
 ) {}
